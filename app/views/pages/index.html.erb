@@ -1,0 +1,63 @@
+<div style="margin-left: 20px;">
+    <h1>Welcome to <%= Rails.application.class.module_parent_name %>!</h1>
+
+    <p>Before making requests, please subscribe and log in at <a href="https://www.postman.com" target="_blank">Postman</a>.</p>
+
+    <h2>🔐 Available Endpoints</h2>
+
+    <h3>1. Retrieve a Token (Alice - user)</h3>
+    <pre>
+    POST http://127.0.0.1:8080/realms/quickstart/protocol/openid‑connect/token  
+    Content-Type: application/x-www-form-urlencoded
+
+    client_id=test-cli  
+    username=alice  
+    password=123  
+    grant_type=password
+    </pre>
+    <p><em>Post-response script in Postman:</em></p>
+    <pre>
+    let jsonData = pm.response.json();
+    pm.collectionVariables.set("access_token", jsonData.access_token);
+    </pre>
+
+    <h3>2. Call Secured Endpoint</h3>
+    <pre>
+    GET http://localhost:3000/secured  
+    Authorization: Bearer <access_token>
+    </pre>
+    <p><strong>Expected response:</strong></p>
+    <pre>
+    {
+    "message": "secured"
+    }
+    </pre>
+
+    <h3>3. Retrieve Admin Token</h3>
+    <pre>
+    POST http://127.0.0.1:8080/realms/quickstart/protocol/openid‑connect/token  
+    Content-Type: application/x-www-form-urlencoded
+
+    client_id=test-cli  
+    username=admin  
+    password=123  
+    grant_type=password
+    </pre>
+    <p><em>Post-response script in Postman:</em></p>
+    <pre>
+    let jsonData = pm.response.json();
+    pm.collectionVariables.set("admin_access_token", jsonData.access_token);
+    </pre>
+
+    <h3>4. Call Admin Endpoint</h3>
+    <pre>
+    GET http://localhost:3000/admin  
+    Authorization: Bearer <admin_access_token>
+    </pre>
+
+    <h2>🛠 Using curl</h2>
+    <pre>
+    curl -H "Authorization: Bearer <access_token>" http://localhost:3000/secured
+    curl -H "Authorization: Bearer <admin_access_token>" http://localhost:3000/admin
+    </pre>
+</div>
